@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sovg'a Do'koni</title>
+    <style>
+        body {
+            background-color: white; /* Orqa fon oq */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh; /* Barcha balandlik */
+            margin: 0;
+        }
+
+        .balance {
+            background-color: #ffe700; /* Oltin rang */
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 20px;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+        }
+
+        .gift-frame {
+            border: 5px solid black;
+            padding: 20px;
+            text-align: center;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .gift-image {
+            width: 200px;
+            height: auto;
+        }
+
+        .gift-name {
+            margin: 15px 0 5px 0;
+        }
+
+        .gift-price {
+            margin: 5px 0 15px 0;
+        }
+
+        .buy-button {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .buy-button:hover {
+            background-color: darkgreen;
+        }
+
+        /* Modal oyna dizayni */
+        .modal {
+            display: none; /* Avval ko'rinmaydi */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .close-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .close-button:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <!-- Foydalanuvchi ball hisobi -->
+    <div class="balance">Tangalar: <span id="userScore">0</span></div> <!-- Bu yerda foydalanuvchi tangalari ko'rinadi -->
+
+    <div class="container">
+        <div class="gift-frame">
+            <img src="https://firebasestorage.googleapis.com/v0/b/blast-b1b82.appspot.com/o/X%2Ffile-TpSMorn5CyFTGBwRTjQlfVLq.webp?alt=media&token=5b56ed04-ea25-4b21-b83c-660e1fc83030" alt="Sovga" class="gift-image">
+            <h3 class="gift-name">JONLI EFIR YO'LLANMASI</h3>
+            <button class="buy-button" onclick="buyGift()">Sotib olish - 10 Tangas</button>
+        </div>
+    </div>
+
+    <!-- Modal oyna -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p id="modalMessage"></p>
+            <button class="close-button" onclick="closeModal()">Yopish</button>
+        </div>
+    </div>
+
+    <script>
+        // LocalStorage-dan foydalanuvchi ballini olish
+        let userScore = localStorage.getItem('userScore') || 0;
+        document.getElementById('userScore').innerText = userScore;
+
+        // Modal oynani ochish funksiyasi
+        function openModal(message) {
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('myModal').style.display = 'flex';
+        }
+
+        // Modal oynani yopish funksiyasi
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        // Sovg'a sotib olish
+        function buyGift() {
+            const giftPrice = 10; // Sovg'a narxi
+            let currentScore = parseInt(userScore); // Ballni raqamga aylantirish
+
+            if (currentScore >= giftPrice) {
+                // Foydalanuvchi tangalari yetarli bo'lsa
+                currentScore -= giftPrice; // Tangalarni kamaytirish
+                localStorage.setItem('userScore', currentScore); // Yangilangan tangalarni saqlash
+                document.getElementById('userScore').innerText = currentScore;
+
+                // Tasodifiy sovg'a kodlari
+                const giftCodes = ["SOVGA123", "SOVGA098"];
+                const randomCode = giftCodes[Math.floor(Math.random() * giftCodes.length)];
+
+                // Modal oynani ochish va kodni ko'rsatish
+                openModal(`Tabriklaymiz! Sizga ${randomCode} kodi berildi.`);
+            } else {
+                // Tangalar yetmasa ogohlantirish
+                openModal('Kechirasiz, tangalaringiz yetarli emas!');
+            }
+        }
+    </script>
+</body>
+</html>
